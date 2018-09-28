@@ -1,0 +1,33 @@
+<div class="container">
+	<div class="row login_main">
+		<div class="col-sm-4 col-xs-8 cen">
+			<center><img src="images/admin.png" alt="Admin" class="img-responsive center-block img-circle img-thumbnail"></center>
+			<div class="login_sub">
+				<form name="myForm" class="form-horizontal">
+					<div class="form-group">
+						<input type="text" id="email" placeholder="Enter email" class="form-control" class="user" 
+						ng-model="userid" name="email" required>
+					</div>
+					<div class="form-group">
+						<input id="password-field" type="password" class="form-control" name="password" ng-model="password">
+						<span toggle="#password-field" ng-click="passwordshow()" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+					</div>
+					<br/>
+					<div class="form-group">
+						<div class="loginbtns">
+							<div class="col-xs-6">
+								<button ng-disabled="myForm.$invalid" class="btn btn-block" value="Login" ng-click="loggedIn();">Login</button>
+							</div>
+							<div class="col-xs-6">
+								<button class="btn btn-block" ui-sref="Home">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="text-center">
+				<a class="forgot" ui-sref="forgotpassword">Forgot Password?</a>
+			</div>
+		</div>
+	</div>
+</div>	

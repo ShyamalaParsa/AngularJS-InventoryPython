@@ -1,0 +1,61 @@
+<div class="col-xs-12 col-sm-8 col-md-8 col-lg-10">
+        <h3 class="heading">Assign inventory</h3>
+        <p class="text-center">Fields marked with asterisk (<span class="imp1">*</span>) are mandatory</p>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 well">
+<form name="myForm" role="form" ng-submit=save>
+        <div class="row" id="invent_col">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 form-group">
+                <label>Enter EmployeeID</label><span class="imp"> *</span>
+                <input class="form-control" type="number" ng-model="invent.employeeId" ng-value="myempid" name="empid" placeholder="Enter Employeeid" min="1" ng-minlength='3' ng-maxlength="12" required>
+                <span style="color:red" ng-show="myForm.empid.$touched && myForm.empid.$error.required">Employee id is required</span>
+                <span style="color:red" ng-show="myForm.empid.$error.minlength">Employee Id is too short!</span>
+                <span style="color:red" ng-show="myForm.empid.$error.maxlength">Employee Id is too long!</span>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 form-group">
+                    <label>Enter Employee Name </label><span class="imp"> *</span>
+                <input class="form-control" name="emp" type="text" autocomplete ng-value="myempname" placeholder="Enter employee name" ng-model="invent.employeeName" ng-pattern="/^[a-zA-Z](\D)+$/" required/>
+                <span style="color:red" ng-show="myForm.emp.$touched && myForm.emp.$error.required">Employee Name is required</span>
+                <span style="color:red" ng-show="myForm.emp.$error.pattern">Hey! Only letters, buddy!</span></span>
+            </div>
+        </div>
+        <div class="row" id="invent_col">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label>Enter Cubicle</label><span class="imp"> *</span>
+                <input type="text" name="cubicle" class="form-control" ng-model="invent.cubicle" placeholder="Enter Cubicle"required/>
+                <span style="color:red" ng-show="myForm.cubicle.$touched && myForm.cubicle.$error.required">Cubicle is required</span>
+            </div>
+    
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 form-group">
+                    <label>Date of Assign </label><span class="imp"> *</span>
+                    <div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                        <input type="text" name="date" class="form-control" uib-datepicker-popup="{{dateformat}}"  ng-model="invent.dateAssigned" is-open="showdp" max-date="dtmax" required/>
+                        <span style="color:red" ng-show="myForm.date.$touched && myForm.date.$error.required">Date of Assign is required</span>
+               </div>
+               <span class="col-xs-2 col-sm-2 col-md-2 col-lg-2"> 
+                    <button type="button" class="btn btn-default" ng-click="showcalendar1($event)"> 
+                       <i class="glyphicon glyphicon-calendar"></i>
+                    </button>
+               </span>
+                </div>
+        </div>
+        <div class="row" id="invent_col">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label>Enter Floor Number</label><span class="imp"> *</span>
+                <input type="number" name="floor" class="form-control" ng-model="invent.floorNumber" required/>
+                <span style="color:red" ng-show="myForm.floor.$touched && myForm.floor.$error.required">Floor number is required</span>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 form-group">
+                <label>Asset ID</label><span class="imp"> *</span>
+                <select name="asset" class="form-control" data-placeholder="Select Devices" 
+                ng-model="invent.assetId" ng-options="device.inventory_id as device.assetId for device in invent_data"
+                multiple="multiple" multiselect-dropdown required>  
+                </select>
+                <span style="color:red" ng-show="myForm.asset.$touched && myForm.asset.$error.required">Asset id is required</span>  
+            </div>
+        </div>
+    </form>
+    <center><input type="submit" value="Submit" class="btn btn-primary btn-md" 
+        ng-disabled="myForm.$invalid" ng-click="save()">
+    </center>
+</div>
+</div>

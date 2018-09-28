@@ -1,0 +1,59 @@
+<div class="col-xs-12 col-sm-8 col-md-9 col-lg-10 dashboard well">
+      <div ng-repeat="list in list1">
+       <p class="col-xs-8 col-sm-4 col-md-4 col-lg-4"><strong class="device1">{{list.deviceName}}</strong><br><br> 
+        <strong class="totaldevices"> Total Devices: </strong>{{list.total}}<br>
+        <sapn class="alloted" ng-click="availabledevice(list.deviceId)" data-toggle="modal" data-target="#myModal1">
+            <strong>Available: </strong>{{list.available}}</sapn><br>
+              <span class="alloted" ng-click="allotedevice(list.deviceId)" data-toggle="modal" data-target="#myModal">
+         <strong>Alloted: </strong>{{list.alloted}}</span></p>
+      </div>
+    </div>
+      <!-- Modal -->
+  <div id="myModal" class="modal fade dashboardmodel" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title text-center">Alloted list</h4>
+        </div>
+        <div class="scrollbar"> 
+          <div class="modal-body col-md-6" ng-repeat="allo in allotedata">
+            <p class="totaldevices"><strong>Employee id :</strong> {{allo.employeeId}}<br><strong>Employee name: </strong> {{allo.employeeName}}<br>
+              <strong>Asset id: </strong>{{allo.assetId}}<br><strong>Device name: </strong> {{allo.deviceName}}<br>
+              <strong>Serial number: </strong>{{allo.serial_number}}</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div id="myModal1" class="modal fade dashboardmodel" role="dialog">
+      <div class="modal-dialog">
+      
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title text-center">Available list</h4>
+          </div>
+          <div class="scrollbar">
+            <div class="modal-body col-md-6" ng-repeat="avail in availabledata">
+              <p class="totaldevices"><strong>Asset id: </strong>{{avail.assetId}}<br>
+                <strong>Brand Name: </strong>{{avail.brandName}}<br>
+                <strong>Device name: </strong> {{avail.deviceName}}<br>
+                <strong>Serial number: </strong>{{avail.serial_number}}</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+ 

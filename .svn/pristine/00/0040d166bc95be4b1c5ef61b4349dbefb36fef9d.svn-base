@@ -1,0 +1,129 @@
+<div class="col-xs-12 col-sm-8 col-md-8 col-lg-10">
+        <h3 class="heading">Add New Inventory</h3>
+        <p class="pull-right">Fields marked with asterisk (<span class="imp1">*</span>) are mandatory</p> 
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 well">
+        <form name="myForm" role="form" ng-submit="saveUser(item)">
+            <div class="row" id="invent_col"> 
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-3">
+                        <label for="Item Name">Device Brand</label><span class="imp"> *</span>
+                        <select ng-model="item.brandId" name="device" class="form-control" id="brandselection">
+                            <option value="">Choose Device</option>
+                            <option ng-repeat="brand in ProductBrandData" value="{{brand.brandId}}">{{brand.brandName}}</option>
+                            <span style="color:red" ng-show="myForm.device.$touched && myForm.device.$error.required">Device brand is required.</span>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <input type="radio" name="tbrand" ng-model="brandName" id="bname" ng-click="brand_name()" data-waschecked="true" value="tbrandsvalue"> Other
+                    </div>
+                    <div ng-show="myVar" id="vendor_text">
+                        <div class="form-group col-xs-12 col-sm-5 col-md-5 col-lg-5" ng-switch="brandName">
+                            <div ng-switch-when="tbrandsvalue">
+                                <label for="text-area">Device Brand</label><span class="imp"> *</span>
+                                <input ng-model="item.brandName" name="device" class="form-control" id="text" placeholder="Enter Brand type">
+                                <span style="color:red" ng-show="myForm.device.$touched && myForm.device.$error.required">Device brand is required.</span>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                            <label for="text">Device Type</label><span class="imp"> *</span>
+                            <select ng-model="item.deviceId" class="form-control" id="deviceselection">
+                                <option value="">Choose Device</option>
+                                <option ng-repeat="device in DevicesDetailsData" value="{{device.deviceId}}">{{device.deviceName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <input type="radio" name="tdevice" ng-model="deviceName" id="bdevice" ng-click="device_Name()" data-waschecked="true" value="tdevicesvalue">Other
+                        </div>
+                        <div ng-show="myVar1" id="vendor_text">
+                            <div class="form-group col-xs-12 col-sm-5 col-md-5 col-lg-5" ng-switch="deviceName">
+                                <div ng-switch-when="tdevicesvalue">
+                                        <label for="text">Device Type</label><span class="imp"> *</span>
+                                        <input type="text" ng-model="item.deviceName" class="form-control" id="text" placeholder="Enter Device Name" required>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="row" id="invent_col">
+                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <label for="text">Asset ID</label><span class="imp"> *</span>
+                            <input type="text" name="asset" ng-model="item.assetId" placeholder="Enter Asset id" class="form-control" required>
+                            <span style="color:red" ng-show="myForm.asset.$touched && myForm.asset.$error.required">Asset id is required.</span>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <label for="text">Serial Number</label><span class="imp"> *</span>
+                            <input type="text" name="serial" ng-model="item.serial_number" placeholder="Enter Serialnumber" class="form-control" required>
+                            <span style="color:red" ng-show="myForm.serial.$touched && myForm.serial.$error.required">Serial number is required.</span>
+                    </div>
+            </div>   
+            <div class="row" id="invent_col">
+                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <label for="text">Product Purchase Date</label><span class="imp"> *</span>
+                        <div class="row col-xs-12 col-sm-12 col-md-10 col-lg-10">
+                        <input type="text" name="date" uib-datepicker-popup="{{dateformat}}" ng-model="item.purchase_date" class="form-control" is-open="showdp" max-date="dtmax" required>
+                        <span style="color:red" ng-show="myForm.date.$touched && myForm.date.$error.required">Product purchase date is required.</span>
+                         </div>  
+                         <span class="col-xs-5 col-sm-5 col-md-2 col-lg-2"> 
+                             <button type="button" class="btn btn-default" ng-click="showcalendar1($event)"> 
+                                <i class="glyphicon glyphicon-calendar"></i>
+                             </button>
+                        </span>
+                    </div>
+                    <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <label for="text">Product Contract Peroid</label><span class="imp"> *</span>
+                        <input type="text" name="period" ng-model="item.contract_period" class="form-control" placeholder="Enter Product Contract Time" required>
+                        <span style="color:red" ng-show="myForm.period.$touched && myForm.period.$error.required">Product contract peroid is required.</span>
+                    </div>
+            </div>  
+    <div class="row" id="invent_col">
+            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="text">Product Price</label><span class="imp"> *</span>
+                    <input type="text" name="price" ng-model="item.product_price" class="form-control" id="text" placeholder="Enter Product Price" required>
+                    <span style="color:red" ng-show="myForm.price.$touched && myForm.price.$error.required">Product price is required.</span>
+            </div>
+            <div class="row form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+                        <label for="text">Product Vendor</label><span class="imp"> *</span>
+                        <select ng-model="item.vendorId" id="vendorselection" class="form-control">
+                            <option value="">Choose Vendor</option>
+                            <option ng-repeat="vendor in vendorAddressData" value="{{vendor.vendorId}}">{{vendor.vendorName}}</option>
+                            <span style="color:red" ng-show="myForm.date.$touched && myForm.date.$error.required">Employee id is required.</span>
+                        </select>
+                </div>
+                <div class="col-md-1">
+                        <input type="radio"  name="tvendor" ng-model="vendorName" id="vendor" ng-click="vendor_name()" value="tvendorsvalue">Other
+                </div>
+            </div>
+    </div><br>
+    <div class="row" ng-show="myVar2" id="vendor_text">
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-switch="vendorName">      
+                    <div ng-switch-when="tvendorsvalue">
+                            <label for="text">Vendor Name</label><span class="imp"> *</span>
+                            <input type="text" name="vname" ng-model="item.vendorName" class="form-control" id="text" placeholder="Enter Vendor Name">
+                            <span style="color:red" ng-show="myForm.vname.$touched && myForm.vname.$error.required">Vendor name is required.</span>
+                        </div><br>
+                        <div>
+                            <label for="text">Vendor Contact Number</label><span class="imp"> *</span>
+                                <input type="text" name="vencont" type="number" ng-minlength="10" ng-maxlength="16"  name="phone" 
+                                ng-model="item.contact" class="form-control" placeholder="Enter Vendor Number">
+                                <span class="help-block" style="color:rgb(255, 0, 0)" ng-show="((myForm.phone.$error.minlength || myForm.phone.$error.maxlength) && myForm.phone.$dirty) ">phone number should be 10 digits</span>
+                                <span style="color:red" ng-show="myForm.vencont.$touched && myForm.vencont.$error.required">Vendor contact number is required.</span>
+                        </div>
+                    </div>
+                
+                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-switch="vendorName">
+                    <div ng-switch-when="tvendorsvalue">
+                        <label for="text-area">Vendor Address</label><span class="imp"> *</span>
+                        <textarea rows="5" cols="2" name="venadd" ng-model="item.address" class="form-control" id="text" placeholder="Enter Vendor Address" ></textarea>
+                        <span style="color:red" ng-show="myForm.venadd.$touched && myForm.venadd.$error.required">Vendor address is required.</span>
+                    </div>
+                </div>
+            </div><br>
+        <input type="submit" value="Submit" class="btn btn-primary btn-md pull-right" 
+            ng-disabled="myForm.$invalid" ng-click="saveUser()">
+        </form>
+    </div>     
+    </div>

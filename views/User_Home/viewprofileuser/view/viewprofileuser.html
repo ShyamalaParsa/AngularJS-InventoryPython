@@ -1,0 +1,22 @@
+<div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+        <div class="col-md-8 viewprofile well">
+            <h3 class="heading">Admin profile</h3>
+            <div class="row">
+                <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2"><strong>Name:</strong></div>
+                <div class="col-xs-4 col-sm-6 col-md-6 col-lg-6">{{details.employeeName}}</div>
+            </div><br>
+            <div class="row">
+                <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2"><strong>Employee Id:</strong></div>
+                <div class="col-xs-4 col-sm-6 col-md-6 col-lg-6">{{details.employeeId}}</div>
+            </div><br>
+            <div class="row">
+                <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2"><strong>Email Id:</strong></div>
+                <div class="col-xs-4 col-sm-6 col-md-6 col-lg-6">{{details.email}}</div>
+            </div><br>
+            <div class="row">
+                <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2"><strong>Picture:</strong></div>
+                <div class="col-xs-5 col-sm-6 col-md-6 col-lg-6">
+                    <img ng-src="data:image/jpeg;base64,{{profile.profile_pic}}" height="150px"/></div>
+            </div>
+        </div>
+    </div>

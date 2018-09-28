@@ -1,0 +1,62 @@
+<div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+        <h3 class="heading">Edit Book</h3>
+        <p class="text-center">Fields marked with asterisk (<span class="imp1">*</span>) are mandatory</p>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 well">
+<form name="myForm" role="form" ng-submit="update()">
+    <div class="row">
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <label>Book Name </label><span class="imp"> *</span>
+            <input type="text" name="book" ng-model="item.book_name" class="form-control" required/>
+            <span style="color:red" ng-show="myForm.book.$touched && myForm.book.$error.required">Book name is required</span>
+        </div>
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <label>Author Name </label><span class="imp"> *</span>
+            <input type="text" name="author"ng-model="item.book_author" class="form-control" required/>
+            <span style="color:red" ng-show="myForm.author.$touched && myForm.author.$error.required">Author name is required</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <label>ISBN </label><span class="imp"> *</span>
+            <input type="text" name="isbn" ng-model="item.ISBN" class="form-control" required/>
+            <span style="color:red" ng-show="myForm.isbn.$touched && myForm.isbn.$error.required">ISBN is required</span>
+        </div>
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <label>Rack Number </label><span class="imp"> *</span>
+            <input type="number" name="rack" ng-model="item.rack_number" class="form-control" required/>
+            <span style="color:red" ng-show="myForm.rack.$touched && myForm.rack.$error.required">Rack number is required</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <label>Technology </label><span class="imp"> *</span>
+            <select ng-model="item.department_id" class="form-control">
+                    <option ng-repeat="x in invent_data" value="{{x.department_id}}">
+                        {{x.department_name}}</option>
+                        <option value="">--select an option--</option>
+                </select>
+        </div>
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <label>Price </label><span class="imp"> *</span>
+            <input type="text" name="price" ng-model="item.price" class="form-control" required/>
+            <span style="color:red" ng-show="myForm.price.$touched && myForm.price.$error.required">Price is required</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <label>Quantity </label><span class="imp"> *</span>
+            <input type="number" name="quality" min="0" ng-model="item.quantity" class="form-control" required/>
+            <span style="color:red" ng-show="myForm.quality.$touched && myForm.quality.$error.required">Quantity is required</span>
+        </div>
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label>Description </label><span class="imp"> *</span>
+                <textarea rows="5" name="desc" cols="10" ng-model="item.Description" class="form-control" required></textarea>
+                <span style="color:red" ng-show="myForm.desc.$touched && myForm.desc.$error.required">Description is required</span>
+            </div>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" type="submit" ng-disabled="myForm.$invalid">Update</button>
+    </div>
+</form>
+</div>
+</div>

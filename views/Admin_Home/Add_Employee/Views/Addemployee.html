@@ -1,0 +1,69 @@
+<div class="col-xs-12 col-sm-8 col-md-8 col-lg-10 page">
+        <h3 class="heading">Employee Registration Form</h3>
+         <p class="text-center">Fields marked with asterisk (<span class="imp1">*</span>) are mandatory</p>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 well">
+    <form name="myForm" ng-submit="save()">
+        <div class="row">
+            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="Item Name">Employee Id</label><span class="imp"> *</span>
+                <input type="number" class="form-control" ng-model="user.employeeId" name="empid" placeholder="Enter Employeeid" min="1" ng-minlength='3' ng-maxlength="12" required>
+                <span style="color:red" ng-show="myForm.empid.$touched && myForm.empid.$error.required">Employee id is required.</span>
+                <span style="color:red" ng-show="myForm.empid.$error.minlength">Employee Id is too short!</span>
+                <span style="color:red" ng-show="myForm.empid.$error.maxlength">Employee Id is too long!</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="text">Employee Name</label><span class="imp"> *</span>
+                <input type="text" class="form-control" ng-model="user.employeeName" name="empname" placeholder="Enter employee name" ng-minlength="3" ng-maxlength="15"  ng-pattern="/^[a-zA-Z](\D)+$/" required>
+                <span style="color:red" ng-show="myForm.empname.$touched && myForm.empname.$error.required">Employee name is required.</span>
+                <span style="color:red" ng-show="myForm.empname.$error.minlength">Your name should contain atleast 4 characters*</span>
+                <span style="color:red" ng-show="myForm.empname.$error.maxlength">Your name should not contain 15 characters*</span>
+                <span style="color:rgb(255, 0, 149)" ng-show="myForm.empname.$error.pattern">Hey buddy,Enter letters only!</span></span>
+            </div>
+        </div>
+            
+        <div class="row">
+            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="text">Email</label><span class="imp"> *</span>
+                <input type="email" class="form-control" name="email" ng-model="user.email" placeholder="Enter email id" required>
+                <span style="color:red" ng-show="myForm.email.$touched && myForm.email.$error.required">Email is required.</span>
+                <span style="color:red" ng-show="myForm.email.$touched && myForm.email.$error.email">Please enter valid email id.</span>
+            </div>
+            </div>
+            <div class="row">   
+            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="text">Joining Date</label><span class="imp"> *</span>
+                <div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                <input type="text" class="form-control" value="today" uib-datepicker-popup="{{dateformat}}" name="date" ng-model="user.joiningDate" placeholder="Enter Joining Date" is-open="showdp" max-date="dtmax" required>
+                <span style="color:red" ng-show="myForm.date.$touched && myForm.date.$error.required">Joining date is required.</span>
+            </div>
+            <span class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+               <button type="button" class="btn btn-default" ng-click="showcalendar($event)"> 
+                    <i class="glyphicon glyphicon-calendar"></i>
+                </button>
+            </span>
+            </div>
+        </div>
+            
+        <div class="row">
+            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label>Role</label><span class="imp"> *</span>
+                <select ng-model="user.role_id" name="role" class="form-control" required>
+                    <option value="">Choose Role</option>
+                        <option ng-repeat="role in users" value="{{role.role_id}}">{{role.role_name}}</option>  
+                    </select>
+                    <span style="color:red" ng-show="myForm.role.$touched && myForm.role.$error.required">Role is required.</span>
+            </div> 
+        </div>   
+        <div class="row">       
+            <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label>Gender  </label><span class="imp"> *</span>
+                    <input type="radio" ng-model="user.gender" value="M" name="optradio"> Male
+                    <input type="radio" ng-model="user.gender" value="F" name="optradio"> Female
+            </div>
+        </div>
+        <center><button type="submit" class="btn btn-primary" ng-disabled="myForm.$invalid">Submit</button></center>
+    </form>
+</div>
+</div>

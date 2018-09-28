@@ -1,0 +1,20 @@
+<div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+<div class="container">
+    <h3>Upload Your Prifile Picture</h3>
+            <form name="myForm" role="form">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" >
+                        <img ng-src="data:image/jpeg;base64,{{profile.picture}}" height="150px" class="mg-thumbnail img-responsive profilepic" id="controller">
+                        <input type="file" id="uploadedimage" class="browse" file ng-model="picture" name="file-upload-field"  
+                        ng-model-instant onchange="angular.element(this).scope().imageUploadFunc(event)" required/>                
+                    </div>
+                </div><br>
+                <div class="btn-group">
+                    <button class="btn btn-info" ui-sref='Admin_home'>Back</button>
+                    <button  type="submit" class="btn btn-info" ng-click="uploadPic1()" ng-disabled="myForm.$invalid">Update</button>
+                </div>
+            </form>
+    </div>
+</div>
+
+

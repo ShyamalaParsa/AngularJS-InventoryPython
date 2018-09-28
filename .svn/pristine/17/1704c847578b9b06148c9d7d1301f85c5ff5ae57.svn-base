@@ -1,0 +1,37 @@
+angular.module("inventApp").controller("assigninventCtrl1", function ($scope,$state,$http,$timeout,$filter,myService) {
+    
+        var hdtext = angular.element(document.querySelector('#wel'));
+        hdtext.addClass('hidden');
+                //get call for devicenamelist....
+                $http({
+                    method: "GET",
+                    url: x+"/devicelist"
+                    }).then(function inventSuccess(respons) {
+                    $scope.inventories = respons.data;
+                    $scope.invent_data = $scope.inventories.available;               
+                    });
+                    $scope.today = function () {
+                        $scope.dt = new Date();
+                    };
+                    $scope.dateformat="MM/dd/yyyy";
+                    $scope.today();
+                    $scope.showcalendar1 = function ($event) {
+                        $scope.showdp = true;
+                    };
+                    $scope.showdp = false;        
+                    $scope.dtmax = new Date();
+            //Post api call for assigninventory....
+     $scope.save = function(){
+         $scope.invent.dateAssigned = $filter('date')($scope.invent.dateAssigned, "MM/dd/yyyy");
+         myService.assigninventory($scope.invent).then(function(data){
+             $scope.aaaa = data;
+             swal("Inventory Assigned successfully")
+         },function(err){
+             if(err){
+                 $scope.errorMessage = err;
+             }
+         })
+         $state.transitionTo("Admin_home.Assigninventory",null,{'reload':true});
+     }
+    });
+    

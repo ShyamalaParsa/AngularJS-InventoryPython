@@ -1,0 +1,269 @@
+#!flask/bin/python
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+from flask import Flask, jsonify, abort, make_response, request, g
+from flask_restful import reqparse
+from flask_restful import Resource
+
+import datetime
+import logging
+import pymysql
+import json
+import logging.config
+import sys
+
+		
+class InventoryAllocation(Resource):
+	def get(self):
+
+		logger = logging.getLogger("InventoryAllocation")
+		logger.info('Entered into InventoryAllocation GET method')
+
+		try:
+			if 'allocation_id' in request.args:
+				allocation_id = request.args.get('allocation_id')
+				cursor = g.appdb.cursor()
+
+				query = """SELECT ia.allocation_id, ia.employeeId, e.employeeName,
+							ia.floorNumber, ia.cubicle, 
+							DATE_FORMAT(ia.dateAssigned,'%%m/%%d/%%Y')
+				 			AS dateAssigned FROM inventory_allocation ia JOIN inventories i
+							ON (i.inventory_id = ia.inventoryId) JOIN employee e ON
+							(e.employeeId = ia.employeeId)WHERE ia.flag = 1 AND 
+						ia.allocation_id = %s AND i.flag = 1 ;"""
+
+				device = """SELECT i.deviceId FROM inventory_allocation ia INNER JOIN inventories i 
+							ON ia.inventoryId = i.inventory_id WHERE ia.allocation_id = %s"""
+				cursor.execute(device,(allocation_id))
+				deviceId = cursor.fetchone()['deviceId'] 
+
+				assignedQuery = """SELECT inventoryId FROM inventory_allocation WHERE flag =1"""
+				cursor.execute(assignedQuery)
+				assigned = [inventoryId['inventoryId'] for inventoryId in cursor.fetchall()]
+
+				availableQuery = """SELECT inventory_id, serial_number, assetId FROM inventories WHERE flag=1 AND deviceId = %s"""
+				cursor.execute(availableQuery, (deviceId))
+				available = [device for device in cursor.fetchall() if device['inventory_id'] not in assigned]
+
+				cursor.execute(query,(allocation_id))
+				invento = cursor.fetchone()
+				status="success"
+				statuscode=200
+			else:
+				status="request parameter allocation_id missing"
+				invento=[]
+				statuscode=204
+				available=[]
+
+
+
+		except:
+			logger.warn("there is some issue with the db")
+
+		logger.info('Exiting from InventoryAllocation GET method')
+		return jsonify({"status": status,"response":invento, "available":available})
+
+	def post(self):
+		logger = logging.getLogger("InventoryAllocation")
+		logger.info('Entered into InventoryAllocation POST method')
+
+		try:
+			now = datetime.datetime.now()
+			cursor = g.appdb.cursor()
+			alloc = request.json
+			form = '%m/%d/%Y'
+			products = alloc['assetId']
+
+		except:
+			logger.warn("there is some issue with the db")
+
+		for product in products: 
+
+			query = """INSERT INTO inventory_allocation(employeeId, inventoryId,
+							dateAssigned, floorNumber, cubicle)VALUES
+					(%s,%s,str_to_date(%s,%s),%s,%s);"""
+
+			cursor.execute(query, (alloc['employeeId'], product, alloc['dateAssigned'],  
+		    form, alloc['floorNumber'], alloc['cubicle']))
+			g.appdb.commit()
+		
+		logger.info('Exiting from InventoryAllocation POST method')
+		return jsonify({"status": "success", "inserted":products})
+
+	def put(self):
+		logger = logging.getLogger("InventoryAllocation")
+		logger.info('Entered into InventoryAllocation PUT method')
+
+		try:
+			now = datetime.datetime.now()
+			entry = now.strftime("%Y-%m-%d %H:%M:%S")
+			cursor = g.appdb.cursor()
+			update = request.json
+			form = '%m/%d/%Y'
+
+			query = """UPDATE inventory_allocation SET  inventoryId = %s, 
+			employeeId = %s, dateAssigned = str_to_date(%s,%s) WHERE allocation_id = %s;"""
+ 
+			cursor.execute(query, (update['inventory_id']['inventory_id'], update['employeeId'],
+			update['dateAssigned'], form, update['allocation_id']))
+			g.appdb.commit()
+		except:
+			logger.warn("there is some issue with the db")
+
+		
+		logger.info('Exiting from InventoryAllocation PUT method')
+		return jsonify({"status":"Updated","allocation_id":update['allocation_id']}) 
+	
+
+	def delete(self,allocation_id):
+		logger = logging.getLogger("InventoryAllocation")
+		logger.info('Entered into InventoryAllocation DELETE method')
+
+		try:
+			now = datetime.datetime.now()
+			cursor = g.appdb.cursor()
+			query = """UPDATE inventory_allocation SET flag = 0 where allocation_id = %s ;"""
+			cursor.execute(query,allocation_id)
+			g.appdb.commit()
+		
+		except:
+			logger.warn("there is some issue with the db")
+
+		logger.info('Exiting from InventoryAllocation DELETE method')
+		return jsonify({"status": "Updated", "response": "deleted"})
+
+
+class AllocationList(Resource):
+	def get(self):
+
+		logger = logging.getLogger("InventoryAllocation")
+		logger.info('Entered into InventoryAllocation GET method')
+		
+		if "page" and "count" in request.args:
+
+			try:
+				cursor = g.appdb.cursor()
+				page = int(request.args.get('page'))
+				count = int(request.args.get('count'))
+				start = (page-1)*count
+					
+			except:
+				logger.warn("there is some issue with the db")
+
+			query1 = """SELECT COUNT(*) AS total_allocation FROM
+						inventory_allocation WHERE flag =1 """
+			cursor.execute(query1)
+			inventor1 = cursor.fetchall()
+
+			query2 = """SELECT ia.allocation_id, ia.employeeId , dd.deviceName,
+						DATE_FORMAT(ia.requestedDate ,'%%m/%%d/%%Y') AS requestedDate,
+						ia.message, ia.status, e.employeeName, i.assetId, i.serial_number,
+						DATE_FORMAT(ia.dateAssigned ,'%%m/%%d/%%Y') AS dateAssigned,
+						ia.floorNumber, ia.cubicle FROM inventory_allocation ia 
+						INNER JOIN inventories i ON i.inventory_id = ia.inventoryId
+						INNER JOIN device_details dd ON i.deviceId = dd.deviceId
+						INNER JOIN employee e ON e.employeeId=ia.employeeId WHERE 
+						ia.flag = 1 """
+
+			cursor.execute(query2)
+			inventor2 = cursor.fetchall()
+			total_inventories2 = len(inventor2)
+
+			query = query2 +""" LIMIT %s,%s;"""
+			
+			cursor.execute(query,(start,count))
+			inventor = cursor.fetchall()
+			total_inventories = len(inventor)
+			total_pages = inventor1[0]['total_allocation']/count if len(inventor)>0 else 0
+			total = inventor1[0]['total_allocation'] if len(inventor)>0 else 0
+			statuscode=200
+			return jsonify({"status": "success", "response":inventor, 
+					"total_inventories":total_inventories2,  "per_page":count, 
+					"page":page, "total_pages":total_pages,"total":total})	 
+
+		else:
+			statuscode=204
+			return jsonify({"status": "page/ count not found", "response": "failure"})
+
+		logger.info('Exiting from InventoryAllocation GET method')
+
+
+class DeviceList(Resource):
+	def get(self):
+		logger = logging.getLogger("DeviceList")
+		logger.info('Entered into DeviceList GET method')
+
+		try:
+			cursor = g.appdb.cursor()
+			assignedQuery = """SELECT inventoryId FROM inventory_allocation WHERE flag =1"""
+			cursor.execute(assignedQuery)
+			assigned = [inventoryId['inventoryId'] for inventoryId in cursor.fetchall()]
+
+			availableQuery = """SELECT inventory_id, serial_number, assetId FROM inventories WHERE flag=1"""
+			cursor.execute(availableQuery)
+			available = [device for device in cursor.fetchall() if device['inventory_id'] not in assigned]
+	
+		except:
+			logger.warn("there is some issue with the db")
+
+
+		logger.info("Exiting from DeviceList GET method")
+		return jsonify({"status":"success", "available":available})
+
+
+class RequestForReplace(Resource):
+	def post(self):
+		logger = logging.getLogger("RequestForReplace")
+		logger.info('Entered into RequestForReplace POST method')
+
+		try:
+			cursor = g.appdb.cursor()
+			req = request.json
+			
+			now = datetime.datetime.now()
+			requestedDate = now.strftime("%Y-%m-%d %H:%M:%S")
+			
+		except:
+			logger.warn("there is some issue with the db")
+
+		query = """INSERT INTO inventory_allocation (employeeId, inventoryId,
+					requestedDate, status, message, floorNumber, cubicle)
+				VALUES (%s,%s,%s,%s,%s,%s,%s);"""
+		
+		cursor.execute(query,(req['employeeId'], req['inventoryId'],
+		requestedDate, req['status'], req['message'], req['floorNumber'], 
+		req['cubicle']))	
+		g.appdb.commit()
+
+		newId = cursor.lastrowid
+		logger.info('Exiting from RequestForReplace POST method')
+		return jsonify({"status": "success", "response":newId}) 
+
+	def put(self):
+
+		logger = logging.getLogger("RequestForReplace")
+		logger.info('Entered into RequestForReplace PUT method')
+
+		try:
+			now = datetime.datetime.now()
+			requestedDate = now.strftime("%Y-%m-%d %H:%M:%S")
+			cursor = g.appdb.cursor()
+			update = request.json
+			form = '%m/%d/%Y'
+		 
+			query = """UPDATE inventory_allocation SET  requestedDate = %s,
+						status = %s, message = %s WHERE allocation_id = %s AND
+					flag=1 ;"""
+			
+			cursor.execute(query, (requestedDate, update['status'], 
+			update['message'], update['allocation_id']))
+			g.appdb.commit()
+		
+		except:
+			logger.warn("there is some issue with the db")
+
+		
+		logger.info('Exiting from InventoryAllocation PUT method')
+		return jsonify({"status": "Updated", "allocation_id": update['allocation_id']})  
+
+

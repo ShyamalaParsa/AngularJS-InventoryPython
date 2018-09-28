@@ -1,0 +1,11 @@
+{
+  "name": "svn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lite": "lite-server"
+  },
+  "author": "",
+  "license": "ISC"
+}

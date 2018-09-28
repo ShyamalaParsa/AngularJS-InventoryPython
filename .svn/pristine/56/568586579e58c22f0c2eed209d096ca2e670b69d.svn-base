@@ -1,0 +1,36 @@
+angular.module("inventApp").controller('addempctrl',function($scope,$http,myService){
+    var hdtext = angular.element(document.querySelector('#wel'));
+    hdtext.addClass('hidden');
+   
+        $http({
+            method: "GET",
+            url: x+"/roles"
+            }).then(function inventSuccess(respons) {
+            $scope.userdata = respons.data;
+            $scope.users =  $scope.userdata['roles'];    
+            });
+           $scope.today = function () {
+                $scope.dt = new Date();
+            };
+            $scope.dateformat="MM/dd/yyyy";
+            $scope.today();
+            $scope.showcalendar = function ($event) {
+                $scope.showdp = true;
+            };
+            $scope.showdp = false;        
+            $scope.dtmax = new Date();
+    $scope.save = function(){
+        myService.addnewemployee($scope.user).then(function(data){
+            if(data.status=="Success"){
+                $scope.employees_data = data;
+                swal("Employee added Successfully");
+            }
+            else if(data.status=="Failed"){
+                swal("EmployeeId already signed up");
+            }
+        })
+        $state.transitionTo("Admin_home.employeeslist",null,{'reload':true}); 
+    }
+
+});
+

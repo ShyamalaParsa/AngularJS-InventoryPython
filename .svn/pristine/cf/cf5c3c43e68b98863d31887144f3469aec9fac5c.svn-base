@@ -1,0 +1,62 @@
+<div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+        <h3 class="heading">Edit Available Inventories</h3>
+        <p class="text-center">Fields marked with asterisk (<span class="imp1">*</span>) are mandatory</p> 
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 well">
+<form name="myForm" role="form" ng-submit="update()" class="col-md-offset-1">
+    <div class="row" id="invent_col">
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <label>Device Brand</label><span class="imp"> *</span>
+            <select ng-model="item.brandId" name="brand" class="form-control" required>
+                <option ng-repeat="brand in ProductBrandData" value="{{brand.brandId}}">{{brand.brandName}}</option>
+            </select>
+            <span style="color:red" ng-show="myForm.brand.$touched && myForm.brand.$error.required">Device Brand is required.</span>
+        </div>
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <label>Device Type</label><span class="imp"> *</span>
+            <select ng-model="item.deviceId" name="device" class="form-control">
+                    <option ng-repeat="device in DevicesDetailsData" value="{{device.deviceId}}">{{device.deviceName}}</option>
+                </select>
+                <span style="color:red" ng-show="myForm.device.$touched && myForm.device.$error.required">Device Type is required.</span>
+        </div>
+    </div>
+
+    <div class="row" id="invent_col">
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <label for="text">Asset ID</label>
+            <input type="text" class="form-control" ng-model="item.assetId">
+        </div>
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <label for="text">Product Price</label>
+            <input type="text" ng-model="item.product_price" class="form-control">
+        </div>
+    </div>
+
+    <div class="row" id="invent_col">
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <label for="text">Product Purchase Date</label>
+            <input type="text" ng-model="item.purchase_date" class="form-control">
+        </div>
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <label for="text">Product Contract Peroid</label>
+            <input type="text" ng-model="item.contract_period" class="form-control">
+        </div>
+    </div>
+
+    <div class="row" id="invent_col">
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <label for="text"> Product Serial No</label>
+            <input type="text" ng-model="item.serial_number" class="form-control">
+        </div>
+        <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <label for="text">Vendor Name</label><span class="imp"> *</span>
+            <select ng-model="item.vendorId" class="form-control">
+                    <option ng-repeat="vendor in vendorAddressData" value="{{vendor.vendorId}}">{{vendor.vendorName}}</option>
+                </select>
+        </div>
+    </div>
+    <div class="col-md-offset-5">
+        <button class="btn btn-info" type="submit">Update</button>
+    </div>
+</form>
+</div>
+</div>

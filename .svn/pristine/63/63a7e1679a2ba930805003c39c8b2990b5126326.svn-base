@@ -1,0 +1,38 @@
+<div class="col-xs-12 col-sm-8 col-md-9 col-lg-10 dashboard">
+    <div class="clearfix heading">
+        <h3 class="pull-left">Book Details</h3>
+        <input type="text" class="no-print search_bar pull-right" ng-model="searchTerm" placeholder="Search Book Details...!" /> 
+    </div> 
+    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-center myinventory item-img" ng-repeat="item in BookDetailsdata | filter:searchTerm">
+        <a ng-click="BooksViewdata(item.book_id)" data-toggle="modal" data-target="#myModal">
+            <i class="fa fa-book fa-3x" aria-hidden="true"></i><br><strong>{{item.book_name}}</strong></a><br><br>
+    </div>
+   
+<div id="myModal" class="modal fade dashboardmodel" role="dialog" ng-repeat="ratedata in bookreadersviewdata">
+        <div class="modal-dialog">
+          <!-- Modal content--> 
+          <div class="modal-content">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title text-center"><strong>{{bookname}}</strong></h3>
+                    </div>
+            <div class="modal-body"> 
+                            <strong class="modal_body_size">Description: </strong><span class="modal_body_size" dd-text-collapse dd-text-collapse-max-length="230" dd-text-collapse-text="{{ availblebooks }}"></span> 
+                            <h4 class="text-center"><strong>Available books: </strong>{{ desc }}</h4>
+                            <h4 class="text-center"><strong>Number of readers: </strong>{{reader}}</h4>
+                            <h4 class="text-center"><strong>Rating: </strong>{{ratings}}</h4>
+                               <center> <span class="body-font-style"> 
+                                <i class="fa fa-star fa-2x" style="color:rgb(216, 213, 39);" ng-repeat="t in getYellowStars(ratings)"></i>
+                                <i class="fa fa-star fa-2x" style="color:#878685;" ng-repeat="t in getGreyStars(ratings)"></i> 
+                            </span></center><span class="pull-right">by <strong>{{bookauthor}}</strong></span><br>
+                            </div>
+            <div class="modal-footer">
+                    <button type="button" class="btn btn-xs btn-primary" data-dismiss="modal">Cancel</button>
+                    <a ng-show="desc >= 1" class="btn btn-xs btn-success" ng-click="requestbook(bookId)">Request</a>                             
+                    <a ng-show="desc === 0" class="btn btn-xs btn-warning" disabled>Add to queue</a>
+            </div>
+        </div>
+      
+        </div>
+      </div>
+</div>

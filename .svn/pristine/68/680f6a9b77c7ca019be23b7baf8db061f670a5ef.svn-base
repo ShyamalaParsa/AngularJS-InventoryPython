@@ -1,0 +1,54 @@
+<div class="page">
+  <nav class="navbar navbar-default navbg topbar">
+    <div class="container-fluid">
+      <div class="navbar-header clearfix">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        <a ui-sref="User_home"><img src="images/ojas-logo.png" class="image" id="imgsrc"></a>
+      </div>
+  
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right" id="navbarside">
+            <li><a ui-sref="User_home"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+          <li><a>{{name}}</a></li>
+          <li><div class="dropdown">
+            <a class="dropdown-toggle drop" id="dropdownMenu" data-toggle="dropdown">
+                <img ng-src="data:image/jpeg;base64,{{profile.profile_pic}}" id="image" class="img-responsive img-circle img-thumbnail"
+                 ><br>Me<span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu dropdown1" aria-labelledby="dropdownMenu1">
+              <i class="fa fa-caret-up fa-3x caret1" aria-hidden="true"></i>
+              <li class="show-image"><a><img ng-src="data:image/jpeg;base64,{{profile.profile_pic}}" class="img-responsive img-thumbnail img-circle imgedit">
+                <span class="uname">{{appname}}</span><p class="change" ui-sref=".profileuploaduser">Edit Picture</p></a></li>
+              <li class="divider"></li>
+              <li><a ui-sref=".changepasswordUser">Change Password</a></li>
+              <li><a ui-sref=".viewprofileuser">View Profile</a></li>
+              <li><a ng-click="logout()">Logout</a></li>
+            </ul>
+          </div>
+        </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="container-fluid bottom" id="content">
+      <usersidebar-Directive></usersidebar-Directive>
+      <div class="">
+        <div ui-view="">
+        </div>
+      </div>
+  </div>
+
+  <footer class="panel panel-default navbg1 clearfix">
+      <div class="scroll-top-wrapper ">
+          <span class="scroll-top-inner">
+            <i class="fa fa-2x fa-arrow-circle-up"></i>
+          </span>
+        </div>
+    <p class="panel-body">All Copy rights Reserved &copy; OJAS Innovative Technologies</p>
+  </footer>
+</div>

@@ -1,0 +1,28 @@
+<div class="col-md-offset-2 col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <h3 class="header1 text-center">CHANGE YOUR PASSWORD</h3><br>
+        <form name="myForm" role="form">
+            <div class="form-group">
+                <label>Old Password</label>
+                <input type="password" ng-model="user.oldpassword" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>New Password</label>
+                <input type="password" name="pwd" ng-model="user.password" ng-pattern= "/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/" class="form-control" required>
+                <span ng-show="myForm.pwd.$invalid && myForm.pwd.$touched ||myForm.pwd.$invalid && myForm.pwd.$dirty" style="color:red;">
+                    <span ng-show="myForm.pwd.$error.required">Password is required </span>
+                </span>
+                <span ng-show="myForm.pwd.$error.pattern" style="color:red;">Password length must be 8 chars including 1UPPER/LOWER, 1special and 1 number  </span>
+            </div>
+            <div class="form-group">
+                <label>Re-Enter New Password</label>
+                <input type="password" name="cpwd" ng-model="user.conformpassword" ng-pattern= "/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/" class="form-control" required>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">          
+                <span ng-show="password!=conformpassword" style="color:red;"> <span ng-show="myForm.cpwd.$error.pattern" style="color:red;"></span>Passwords have to match!</span>  
+                </div><br>      
+            <center>
+                <button type="button" class="btn btn-sm btn-primary" ng-click="ChangeUser()" ng-disabled="myForm.$invalid">Submit</button>
+                <button type="submit" class="btn btn-sm btn-warning" ui-sref="User_home">Cancel</button>
+            </center>
+        </form>
+    </div>
